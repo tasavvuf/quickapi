@@ -1,0 +1,169 @@
+<div class="app-layout">
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <div class="brand">
+        <span class="brand-text">QuickAPI</span>
+        <span class="brand-tag">v1.0</span>
+      </div>
+
+      <div class="workspace-pill" title="Current Workspace">
+        <span class="dot"></span>
+        <span class="ws-name">{{ store.activeWorkspace()?.name || 'Default' }}</span>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <!-- Active Environment Selector -->
+      <div class="env-selector-wrapper">
+        <span class="env-label">Env:</span>
+        <select class="env-select" (change)="onEnvironmentChange($event)">
+          <option value="">No Environment</option>
+          @for (env of store.environments(); track env._id) {
+            <option [value]="env._id" [selected]="store.activeEnvironment()?._id === env._id">
+              {{ env.name }}
+            </option>
+          }
+        </select>
+        <button
+          type="button"
+          class="btn-nav-icon"
+          (click)="isEnvModalOpen.set(true)"
+          title="Manage Environments"
+        >
+          Variables
+        </button>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="quick-nav-actions">
+        <button
+          type="button"
+          class="btn-nav"
+          (click)="isPerfModalOpen.set(true)"
+          title="Run Performance Benchmark"
+        >
+          Benchmark
+        </button>
+
+        <button
+          type="button"
+          class="btn-nav"
+          (click)="isCommentsOpen.set(true)"
+          title="Open Collaboration Comments"
+        >
+          Comments
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Body Split -->
+  <div class="main-body">
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-tabs">
+        <button
+          type="button"
+          class="sidebar-tab"
+          [class.active]="sidebarTab() === 'collections'"
+          (click)="sidebarTab.set('collections')"
+        >
+          Collections
+        </button>
+        <button
+          type="button"
+          class="sidebar-tab"
+          [class.active]="sidebarTab() === 'history'"
+          (click)="sidebarTab.set('history')"
+        >
+          History ({{ store.history().length }})
+        </button>
+      </div>
+
+      <div class="sidebar-pane">
+        @if (sidebarTab() === 'collections') {
+          <app-collections
+            [activeRequestId]="currentRequest()._id || null"
+            (onSelectRequest)="onSelectRequest($event)"
+            (onOpenDocs)="openDocumentation($event)"
+          />
+        } @else {
+          <app-history
+            (onReplay)="onReplayRequest($event)"
+          />
+        }
+      </div>
+    </aside>
+
+    <!-- Center Workspace Pane -->
+    <main class="content-pane">
+      @if (currentView() === 'runner') {
+        <app-request-runner
+          [request]="currentRequest()"
+          (onSave)="openSaveModal($event)"
+          (onOpenBenchmark)="isPerfModalOpen.set(true)"
+        />
+      } @else if (currentView() === 'docs') {
+        <app-documentation-view
+          [collection]="docCollection()"
+          [requests]="docRequests()"
+          (back)="currentView.set('runner')"
+        />
+      }
+    </main>
+  </div>
+
+  <!-- Save Request Modal -->
+  <app-modal [isOpen]="isSaveModalOpen()" [title]="'Save Request to Collection'" (close)="isSaveModalOpen.set(false)">
+    <div class="save-modal-form">
+      <div class="form-group">
+        <label class="form-label">Request Name</label>
+        <input
+          type="text"
+          class="form-input"
+          [(ngModel)]="saveRequestName"
+          placeholder="e.g. Get User Profile"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Target Collection</label>
+        <select class="form-input" [(ngModel)]="saveTargetColId">
+          <option value="" disabled>Select a collection</option>
+          @for (c of store.collections(); track c._id) {
+            <option [value]="c._id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="isSaveModalOpen.set(false)">Cancel</button>
+        <button type="button" class="btn-confirm" (click)="confirmSaveRequest()">Save</button>
+      </div>
+    </div>
+  </app-modal>
+
+  <!-- Environments Manager Modal -->
+  <app-environments-modal
+    [isOpen]="isEnvModalOpen()"
+    (close)="isEnvModalOpen.set(false)"
+  />
+
+  <!-- Performance Benchmark Modal -->
+  <app-performance-modal
+    [isOpen]="isPerfModalOpen()"
+    [request]="currentRequest()"
+    (close)="isPerfModalOpen.set(false)"
+  />
+
+  <!-- Comments Collaboration Drawer -->
+  <app-comments-drawer
+    [isOpen]="isCommentsOpen()"
+    [request]="currentRequest()"
+    (close)="isCommentsOpen.set(false)"
+  />
+
+  <!-- Global Toast Feedback -->
+  <app-toast />
+</div>
