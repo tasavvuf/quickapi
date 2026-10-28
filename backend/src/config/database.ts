@@ -18,7 +18,9 @@ export async function connectDatabase(): Promise<void> {
   // Fallback: in-memory MongoDB
   try {
     const { MongoMemoryServer } = await import('mongodb-memory-server');
-    const mongod = await MongoMemoryServer.create();
+    const mongod = await MongoMemoryServer.create({
+      binary: { version: '7.0.14' },
+    });
     mongoUri = mongod.getUri();
     await mongoose.connect(mongoUri);
     console.log(`[db] Connected to embedded MongoDB at ${mongoUri}`);
@@ -27,3 +29,4 @@ export async function connectDatabase(): Promise<void> {
     process.exit(1);
   }
 }
+
