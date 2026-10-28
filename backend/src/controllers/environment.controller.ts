@@ -65,3 +65,4 @@ export async function deleteEnvironment(req: Request, res: Response, next: NextF
     next(err);
   }
 }
+

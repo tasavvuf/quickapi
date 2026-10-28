@@ -90,3 +90,4 @@ apiRequestSchema.index({ collectionId: 1 });
 apiRequestSchema.index({ workspaceId: 1 });
 
 export const ApiRequest = mongoose.model<IApiRequest>('ApiRequest', apiRequestSchema);
+

@@ -36,3 +36,4 @@ export function interpolateRecord(
   }
   return result;
 }
+

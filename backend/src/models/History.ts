@@ -43,3 +43,4 @@ historySchema.index({ workspaceId: 1, createdAt: -1 });
 historySchema.index({ method: 1 });
 
 export const History = mongoose.model<IHistory>('History', historySchema);
+

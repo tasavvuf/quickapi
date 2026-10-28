@@ -22,3 +22,4 @@ const commentSchema = new Schema<IComment>(
 commentSchema.index({ requestId: 1, createdAt: -1 });
 
 export const Comment = mongoose.model<IComment>('Comment', commentSchema);
+

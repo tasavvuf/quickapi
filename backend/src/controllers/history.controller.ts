@@ -36,3 +36,4 @@ export async function clearHistory(req: Request, res: Response, next: NextFuncti
     next(err);
   }
 }
+

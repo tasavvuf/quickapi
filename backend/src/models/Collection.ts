@@ -25,3 +25,4 @@ collectionSchema.index({ workspaceId: 1 });
 collectionSchema.index({ parentId: 1 });
 
 export const Collection = mongoose.model<ICollection>('Collection', collectionSchema);
+

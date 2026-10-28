@@ -190,3 +190,4 @@ export function generateCurl(req: IApiRequest): string {
 
   return curl;
 }
+

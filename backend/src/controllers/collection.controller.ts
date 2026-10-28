@@ -59,3 +59,4 @@ export async function deleteCollection(req: Request, res: Response, next: NextFu
     next(err);
   }
 }
+

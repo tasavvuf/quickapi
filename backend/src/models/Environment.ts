@@ -34,3 +34,4 @@ const environmentSchema = new Schema<IEnvironment>(
 environmentSchema.index({ workspaceId: 1 });
 
 export const Environment = mongoose.model<IEnvironment>('Environment', environmentSchema);
+
