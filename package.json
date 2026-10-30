@@ -1,0 +1,10 @@
+{
+  "name": "quickapi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "start": "npm --prefix frontend start",
+    "backend": "npm --prefix backend start"
+  }
+}
