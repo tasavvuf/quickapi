@@ -1,13 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "buildCommand": "cd frontend && npm run build",
+  "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist/frontend",
   "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://quickapi-z0s0.onrender.com/api/:path*"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
 }
-

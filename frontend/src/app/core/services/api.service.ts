@@ -13,7 +13,9 @@ import {
   Workspace,
 } from '../models/api.models';
 
-const BASE = '/api/v1';
+import { environment } from '../../../environments/environment';
+
+const BASE = environment.apiUrl;
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {

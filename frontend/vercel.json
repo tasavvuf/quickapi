@@ -3,9 +3,12 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://quickapi-z0s0.onrender.com/api/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
 }
-
